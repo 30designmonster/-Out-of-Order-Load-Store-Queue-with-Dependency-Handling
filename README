@@ -1,1 +1,44 @@
+# Load/Store Queue (LSQ) with Dependency Handling
+
+## Overview
+
+This project implements a Load/Store Queue (LSQ) with a data dependency by hazard checking and data forwarding and data bypassing  in SystemVerilog that handles:
+
+- In-order commit for loads and stores
+- Simple request interface to issue memory operations
+
+## Interface
+
+### Inputs
+- `clk`        : Clock signal
+- `rst`        : Active-high synchronous reset
+- `req_valid`  : High when a new request is available
+- `opcode`     : `4'b0000` for LOAD, `4'b0001` for STORE
+- `addr`       : Memory address for the operation
+- `data_in`    : Data to be written on STORE operations
+
+### Outputs
+- `load_valid` : High when a valid load response is available
+- `data_out`   : Output data from a LOAD operation
+
+## Features
+
+- Parameterized queue depth and data width
+- Separate queues for loads and stores
+- Store-to-load forwarding (RAW)
+- Memory model for verifying WAR behavior
+- Fixed priority in-order commit
+
+## Notes
+
+- No backpressure mechanism is implemented. All requests are assumed to be accepted.
+- Memory model is 1-cycle read latency for committed stores.
+- Adjust `WIDTH` and `DEPTH` parameters as needed.
+
+## File Structure
+
+- `lsq.sv`     : RTL implementation of the LSQ module with data dependency handling
+- `lsq_tb.sv`  : Testbench to validate WAR/RAW handling (not shown here)
+- `README.md`     : This documentation file
+
 
